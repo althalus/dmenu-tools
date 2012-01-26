@@ -6,5 +6,5 @@
 #
 realBin()
 {
-    which --skip-tilde "$1" 2>/dev/null || return 1
+    which "$1" 2>/dev/null || return 1
 }
