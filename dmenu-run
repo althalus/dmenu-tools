@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # dmenu-run: Run commands listed in $PATH.
 #

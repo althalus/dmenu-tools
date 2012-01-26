@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # dmenu-run-recent: Sort dmenu items by usage. Append ";" to launch the app in
 #                   terminal.

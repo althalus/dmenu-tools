@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # dmenu-edit: Use dmenu to open and edit a file from a given list.
 #

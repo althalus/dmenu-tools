@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # dmenu-path: Make dmenu's cache file conform to XDG base spec.
 #
