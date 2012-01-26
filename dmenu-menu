@@ -20,6 +20,7 @@
 # Global variables:
 CANONICAL="$(readlink -f "$0")"
 BASE="$(dirname "$CANONICAL")"
+. "$HOME/.dmenurc"
 
 PATTERNS="
     s|$BASE/||g
@@ -27,5 +28,5 @@ PATTERNS="
     /^dmenu-path$/d
 "
 
-choice="$(ls $BASE/dmenu-* | sed -e "$PATTERNS" | dmenu)"
+choice="$(ls $BASE/dmenu-* | sed -e "$PATTERNS" | $DMENU)"
 [[ $choice ]] && exec "$BASE/$choice"

@@ -27,10 +27,11 @@ CACHE="${XDG_CACHE_HOME:-"$HOME/.cache"}"
 # Global variables:
 TERM="urxvtc -e"
 CACHE+="/dmenu/dmenu-cache-recent"
+. "$HOME/.dmenurc"
 
 touch $CACHE
 MOST_USED=$(sort $CACHE | uniq -c | sort -r | colrm 1 8)
-RUN=$((echo "$MOST_USED"; dmenu-path | grep -vxF "$MOST_USED") | dmenu) &&
+RUN=$((echo "$MOST_USED"; dmenu-path | grep -vxF "$MOST_USED") | $DMENU) &&
 (echo $RUN; head -n 99 $CACHE) > $CACHE.$$ &&
 mv $CACHE.$$ $CACHE
 

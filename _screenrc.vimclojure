@@ -1,0 +1,14 @@
+# Get rid of startup message.
+startup_message off 
+
+# special xterm hardstatus: use the window title.
+termcapinfo xterm 'hs:ts=\E]2;:fs=\007:ds=\E]2;screen\007'
+# set hardstatus line to tell us what screen window we're in
+hardstatus string "[screen %n%?: %t%?] %h"
+
+# this used to by my 'hardstatus alwayslastline' but that stops it propagating.
+# Not sure of the implications of using caption instead, but thus far, it does what I want.
+caption always '%{= kG}[ %{G}%H %{g}][%= %{= kw}%?%-Lw%?%{g}(%n*%f%t%?(%u)%?)%{w}%?%+Lw%?%?%= %{g}][%{B} %d/%m %{W}%c %{g}]'
+
+screen -t Nailgun lein nailgun
+screen -t Vim vim project.clj

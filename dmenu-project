@@ -1,8 +1,9 @@
 #!/bin/bash
 #
-# dmenu-netcfg: Switch netcfg network profiles.
+# dmenu-edit: Use dmenu to open vim in a project folder 
+# (and optionally start nailgun for clojure projects)
 #
-# Copyright 2010 Tom Vincent <http://www.tlvince.com/>
+# Copyright 2012 Justin Steward <http://www.justinsteward.com/>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,24 +17,18 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
-#
-# Depends:
-# * netcfg
 
 # Global variables:
-CANONICAL="$(readlink -f "$0")"     # Handle symlinks
-BASE="$(dirname "$CANONICAL")"
-
-# Imports:
-. "$BASE/lib/rootCheck.sh"
-. "$BASE/lib/isTerminal.sh"
+FILES="$HOME/PROJECTS"
+BASE="$(dirname "$(readlink -f "$0")")"
 . "$HOME/.dmenurc"
 
-isTerminal "urxvtc" "sudo $CANONICAL"
-rootCheck
-
-choice="$(ls /etc/network.d/ -1Ap | grep -v \/ | $DMENU)"
-if [[ "$choice" ]]; then
-    netcfg -a
-    netcfg "$choice"
+choice="$(tty -s && ls $FILES | $DMENU)"
+if [[ $choice ]]; then
+    cd $FILES/$choice
+    if [ -f "project.clj" ]; then
+        exec gnome-terminal -e "screen -c $HOME/.screenrc.vimclojure"
+    else
+        exec gnome-terminal -e "screen vim"
+    fi
 fi
