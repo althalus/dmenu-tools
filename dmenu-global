@@ -26,7 +26,7 @@ CACHE="${XDG_CACHE_HOME:-"$HOME/.cache"}"
 
 # Global variables:
 TERM="urxvtc -e"
-CACHE+="/dmenu/dmenu-cache-recent"
+CACHE+="/dmenu/dmenu-cache-global"
 . "$HOME/.dmenurc"
 CANONICAL="$(readlink -f "$0")"
 BASE="$(dirname "$CANONICAL")"
