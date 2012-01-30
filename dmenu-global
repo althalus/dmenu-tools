@@ -1,0 +1,52 @@
+#!/bin/bash
+#
+# dmenu-run-recent: Sort dmenu items by usage. Append ";" to launch the app in
+#                   terminal.
+#
+# Based on: b3n <http://bbs.archlinux.org/viewtopic.php?pid=529204#p529204>
+#
+# Copyright 2009, 2010 Tom Vincent <http://www.tlvince.com/>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+# Environment:
+CACHE="${XDG_CACHE_HOME:-"$HOME/.cache"}"
+[[ -d "$CACHE/dmenu" ]] || mkdir -p "$CACHE/dmenu"
+
+# Global variables:
+TERM="urxvtc -e"
+CACHE+="/dmenu/dmenu-cache-recent"
+. "$HOME/.dmenurc"
+CANONICAL="$(readlink -f "$0")"
+BASE="$(dirname "$CANONICAL")"
+
+PATTERNS="
+    s|$BASE/||g
+    /${CANONICAL##*/}/d
+    /^dmenu-path$/d
+"
+touch $CACHE
+MOST_USED=$(sort $CACHE | uniq -c | sort -r | colrm 1 8)
+RUN=$((ls $BASE/dmenu-* | sed -e "$PATTERNS"; echo "$MOST_USED"; $BASE/dmenu-path | grep -vxF "$MOST_USED") | $DMENU) || exit 0
+
+if [[ $RUN = dmenu-* ]]; then
+  exec $BASE/$RUN
+else
+    (echo $RUN; head -n 99 $CACHE) > $CACHE.$$
+    mv $CACHE.$$ $CACHE
+    case $RUN in
+      *\;) exec $(echo $TERM ${RUN/;/});;
+      *)   exec $RUN;;
+    esac
+fi
