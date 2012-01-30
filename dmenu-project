@@ -18,12 +18,23 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-# Global variables:
-FILES="$HOME/PROJECTS"
-BASE="$(dirname "$(readlink -f "$0")")"
-. "$HOME/.dmenurc"
+# Environment:
+CACHE="${XDG_CACHE_HOME:-"$HOME/.cache"}"
+[[ -d "$CACHE/dmenu" ]] || mkdir -p "$CACHE/dmenu"
 
-choice="$(tty -s && ls $FILES | $DMENU)"
+# Global variables:
+CACHE+="/dmenu/dmenu-cache-global"
+. "$HOME/.dmenurc"
+FILES="$HOME/PROJECTS"
+
+if [[ $# -gt 0 ]]; then
+    choice=$@
+else
+    choice="$(tty -s && ls $FILES | $DMENU)" || exit 1
+fi
+
+(echo "dmenu-project $choice"; head -n 99 $CACHE) > $CACHE.$$ &&
+mv $CACHE.$$ $CACHE
 if [[ $choice ]]; then
     cd $FILES/$choice
     if [ -f "project.clj" ]; then
