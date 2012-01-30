@@ -25,15 +25,17 @@ CANONICAL="$(readlink -f "$0")"     # Handle symlinks
 BASE="$(dirname "$CANONICAL")"
 
 # Imports:
-. "$BASE/lib/rootCheck.sh"
-. "$BASE/lib/isTerminal.sh"
 . "$HOME/.dmenurc"
 
-isTerminal "urxvtc" "sudo $CANONICAL"
-rootCheck
+if [[ $EUID -ne 0 ]]; then
+    if ! gksudo -m "Enter sudo password for netcfg" echo "getting root privs"; then
+        echo Bad Password
+        exit 1
+    fi
+fi
 
-choice="$(ls /etc/network.d/ -1Ap | grep -v \/ | $DMENU)"
+choice="$(ls /etc/network.d -1Ap | grep -v \/ | $DMENU)"
 if [[ "$choice" ]]; then
-    netcfg -a
-    netcfg "$choice"
+    sudo netcfg -a
+    sudo netcfg "$choice"
 fi
