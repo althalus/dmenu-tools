@@ -3,6 +3,14 @@ dmenu-tools
 
 `dmenu-tools` is a collection of scripts powered by [dmenu][]&trade;.
 
+* `dmenu-global` combines dmenu-menu and dmenu-run-recent
+* `dmenu-menu` displays a list of the other dmenu scripts in this repo
+* `dmenu-run` displays a list of all binaries in $PATH
+* `dmenu-run-recent` is dmenu-run with history
+* `dmenu-project` is a script to launch development environments for various projects
+* `dmenu-netcfg` is a script to switch netcfg profiles
+* `dmenu-mpc` is a script to control mpd
+
 ## Dependencies
 
 ### Global
@@ -11,6 +19,13 @@ dmenu-tools
 
 ### dmenu-netcfg
 * netcfg
+
+## Setup
+
+1. Clone the repo
+2. Configure your preferred shortcut (keyboard, hotzone, whatever - I like to use Meta-Space) to launch dmenu-global in your DE.
+
+Alternatively, just add shortcuts for the individual scripts you want to use.
 
 ## Exit codes
     0   - successful
